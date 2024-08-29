@@ -8,4 +8,5 @@ function getPb() {
     }
     return pb;
 }
+
 export default getPb;

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loading = () => {
+const loading = () => {
     return (
         <div className="py-3 px-3">
             <div className="flex w-96 flex-col gap-4">
@@ -13,4 +13,4 @@ const Loading = () => {
     );
 };
 
-export default Loading;
+export default loading;

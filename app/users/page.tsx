@@ -16,7 +16,7 @@ const UsersPage = async () => {
                     <li key={user.id}>{user.name}</li>
                 ))}
             </ul>
-            <Link href="/"><button className="btn btn-primary">Home</button></Link>
+            <Link href={"/"}><button className="btn btn-primary">Home</button></Link>
         </>
     );
 };
