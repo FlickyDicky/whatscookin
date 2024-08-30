@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const NavbarPage = () => {
     return (
-        <div className="navbar bg-base-200 rounded-lg shadow-lg shadow-gray-300">
+        <div className="navbar bg-base-200 rounded-lg shadow-lg shadow-gray-300 mb-3">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -41,7 +41,7 @@ const NavbarPage = () => {
                         </li>
                     </ul>
                 </div>
-                <Link href={"/recipies"} className="btn btn-ghost text-2xl calistoga-regular">
+                <Link href={"/recipies"} className="btn btn-ghost text-1xl lg:text-2xl calistoga-regular">
                     whatscookin
                 </Link>
             </div>
