@@ -28,7 +28,7 @@ export default function Home() {
                                 whatscookin
                             </span>{" "}
                             is the ultimate platform to showcase your culinary
-                            skills,
+                            skills,{" "}
                             <b>find inspiration for your next meal</b>, and{" "}
                             <b>connect with fellow food lovers.</b> Turn your
                             passion for cooking into a thriving community.

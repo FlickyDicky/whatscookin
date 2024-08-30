@@ -1,116 +1,70 @@
-"use client"; // Ensures this component runs on the client side
+"use client";
 
-import React, { useEffect, useState } from "react";
-import { fetchRecipes } from "../pocketbase"; // Import the service
-import Link from "next/link";
-import Loading from "./loading";
+import React, { useState, useCallback } from "react";
+import RecipiesList from "./RecipiesList";
 
 const RecipiesPage = () => {
-    const [recipies, setRecipies] = useState<any[]>([]);
+    const [recipiesList, setRecipiesList] = useState<any[]>([]);
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [hasNextPage, setHasNextPage] = useState(true); // To handle next button disable
-    const itemsPerPage = 6;
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController(); // Controller to handle request cancellation
-
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const data = await fetchRecipes(page, itemsPerPage, { signal: controller.signal });
-                if (isMounted) {
-                    setRecipies(data);
-                    // Determine if there's a next page
-                    setHasNextPage(data.length === itemsPerPage);
-                }
-            } catch (err: any) {
-                if (isMounted) {
-                    if (err.name !== "AbortError") {
-                        setError("Failed to fetch data");
-                    }
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchData();
-
-        return () => {
-            isMounted = false;
-            controller.abort(); // Cancel any ongoing request
-        };
-    }, [page]);
-
-    const handlePagePrev = () => {
-        if (page > 1) {
-            setPage(page - 1);
-        }
+    const handleLoadMore = () => {
+        setPage((prevPage) => prevPage + 1);
     };
 
-    const handlePageNext = () => {
-        if (hasNextPage) {
-            setPage(page + 1);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+    const handleLoadingState = (isLoading: boolean) => {
+            setLoading(isLoading);
     };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center flex-wrap">
-                {Array.from({ length: itemsPerPage }).map((_, index) => (
-                    <Loading key={index} />
-                ))}
-            </div>
-        );
-    }
+    const addMoreRecipes = useCallback(
+        (newRecipies: any[], hasMoreItems: boolean) => {
+            setRecipiesList((r) => [...r, ...newRecipies]);
+            setHasMore(hasMoreItems);
+        },
+        []
+    );
 
-    if (error) {
-        return <p>{error}</p>;
-    }
-
-    if (!recipies.length) {
-        return <p>No recipes found</p>;
-    }
 
     return (
-        <div>
-            <div className="flex flex-wrap justify-center">
-                {recipies.map((recipie: any) => (
-                    <div key={recipie.id} className="card bg-neutral text-neutral-content w-96 my-3 mx-3">
-                        <div className="card-body items-center text-center">
-                            <h2 className="card-title">{recipie.name}</h2>
-                            <p>{recipie.description}</p>
-                            <ul>
-                                {recipie.ingredients.map((ingredient: string, index: number) => (
-                                    <div key={index} className="badge badge-primary mx-1">
-                                        <li>{ingredient}</li>
+        <>
+            <div className="flex gap-8 flex-wrap justify-center mt-5">
+                {recipiesList.map((recipe, index: number) => (
+                    <div key={index} className="card bg-base-100 w-96 shadow-lg flex-grow">
+                        <figure>
+                        <img src="https://dummyimage.com/1920x1080/ff9500/000" alt="Random Nature Photo"/>
+                        </figure>
+                        <div className="card-body">
+                            <h2 className="card-title">
+                                {recipe.name || "Recipe Name"}
+                            </h2>
+                            <p>
+                                {recipe.description ||
+                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
+                            </p>
+                            <div className="card-actions justify-end">
+                                {recipe.ingredients && Array.from(recipe.ingredients).map((ingredient:any, index: number) => (
+                                    <div key={index} className="badge badge-primary">
+                                        {ingredient}
                                     </div>
                                 ))}
-                            </ul>
-                            <div className="card-actions justify-end">
-                                <Link href={`/recipies/${recipie.id}`}>
-                                    <button className="btn btn-secondary">Check Recipe</button>
-                                </Link>
                             </div>
                         </div>
                     </div>
                 ))}
-            </div>
+            </div>{" "}
+            {/* Render RecipiesList component and pass the addMoreRecipes callback */}
+            <RecipiesList page={page} addMoreRecipes={addMoreRecipes} setLoading={handleLoadingState}/>
             <div className="flex justify-center">
-                <button className="btn btn-primary" onClick={handlePagePrev} disabled={page === 1}>
-                    Prev
-                </button>
-                <button className="btn btn-primary" onClick={handlePageNext} disabled={!hasNextPage}>
-                    Next
+                <button
+                    className="btn btn-outline mt-5 w-[100%]"
+                    onClick={handleLoadMore}
+                    disabled={!hasMore || loading}
+                >
+                    {loading ? "Loading..." : "Load More"}
                 </button>
             </div>
-        </div>
+        </>
     );
 };
 
