@@ -17,6 +17,20 @@ export async function fetchRecipeById(id: string, options?: any) {
     return recipe;
 }
 
+export const register = async (username: string, name: string, email: string, password: string, passwordConfirm: string) => {
+    const user = {
+        username: username,
+        name: name,
+        email: email,
+        password: password,
+        passwordConfirm: passwordConfirm
+    }
+    const authData = await pb
+        .collection("users")
+        .create(user);
+    return authData;
+}
+
 export const login = async (email: string, password: string) => {
     const authData = await pb
         .collection("users")
