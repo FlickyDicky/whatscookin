@@ -21,7 +21,6 @@ export const login = async (email: string, password: string) => {
     const authData = await pb
         .collection("users")
         .authWithPassword(email, password);
-    localStorage.setItem("pb_token", authData.token);
     return authData;
 };
 
