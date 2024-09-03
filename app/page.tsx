@@ -23,7 +23,7 @@ export default function Home() {
                         <h1 className="text-5xl font-bold calistoga-regular text-gray-100 md:text-6xl pointer-events-none">
                             whatscookin
                         </h1>
-                        <p className="py-6 text-lg text-neutrallg px-1 md:px-0 pointer-events-none">
+                        <p className="py-6 text-lg text-secondary-content px-1 md:px-0 pointer-events-none">
                             <span className="font-bold calistoga-regular">
                                 whatscookin
                             </span>{" "}
