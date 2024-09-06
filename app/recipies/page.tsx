@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import RecipiesList from "./RecipiesList";
+import Link from "next/link";
 
 const RecipiesPage = () => {
     const [recipiesList, setRecipiesList] = useState<any[]>([]);
@@ -14,7 +15,7 @@ const RecipiesPage = () => {
     };
 
     const handleLoadingState = (isLoading: boolean) => {
-            setLoading(isLoading);
+        setLoading(isLoading);
     };
 
     const addMoreRecipes = useCallback(
@@ -25,14 +26,19 @@ const RecipiesPage = () => {
         []
     );
 
-
     return (
         <>
             <div className="flex gap-8 flex-wrap justify-center mt-5">
                 {recipiesList.map((recipe, index: number) => (
-                    <div key={index} className="card bg-base-100 w-96 shadow-lg flex-grow">
+                    <div
+                        key={index}
+                        className="card bg-base-100 w-96 shadow-lg flex-grow"
+                    >
                         <figure>
-                        <img src="https://dummyimage.com/1920x1080/ff9500/000" alt="Random Nature Photo"/>
+                            <img
+                                src="https://dummyimage.com/1920x1080/999999/000"
+                                alt="Random Food Photo"
+                            />
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">
@@ -42,19 +48,37 @@ const RecipiesPage = () => {
                                 {recipe.description ||
                                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
                             </p>
-                            <div className="card-actions justify-end">
-                                {recipe.ingredients && Array.from(recipe.ingredients).map((ingredient:any, index: number) => (
-                                    <div key={index} className="badge badge-primary">
-                                        {ingredient}
-                                    </div>
-                                ))}
+                            <div className="card-actions justify-between">
+                                <Link href={"recipies/" + recipe.id}>
+                                    <button className="btn">See Recipie</button>
+                                </Link>
+                                <div className="flex gap-2 self-end">
+                                    {recipe.ingredients &&
+                                        Array.from(recipe.ingredients).map(
+                                            (
+                                                ingredient: any,
+                                                index: number
+                                            ) => (
+                                                <div
+                                                    key={index}
+                                                    className="badge badge-primary"
+                                                >
+                                                    {ingredient}
+                                                </div>
+                                            )
+                                        )}
+                                </div>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>{" "}
             {/* Render RecipiesList component and pass the addMoreRecipes callback */}
-            <RecipiesList page={page} addMoreRecipes={addMoreRecipes} setLoading={handleLoadingState}/>
+            <RecipiesList
+                page={page}
+                addMoreRecipes={addMoreRecipes}
+                setLoading={handleLoadingState}
+            />
             <div className="flex justify-center">
                 <button
                     className="btn btn-outline mt-5 w-[100%]"
