@@ -37,4 +37,6 @@ next-env.d.ts
 
 #pocketbase
 /.pocketbase
-app/pbinstance.tsx
+pbinstance.tsx
+
+food.jpg
