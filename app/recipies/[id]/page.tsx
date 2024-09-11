@@ -172,7 +172,7 @@ const RecipiePage = ({ params }: any) => {
                             Ingredients
                         </h3>
                     </li>
-                    <div className="grid grid-cols-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2">
                         {recipie.ingredients.map(
                             (ingredient: string, index: number) => (
                                 <li key={index}>{ingredient}</li>
