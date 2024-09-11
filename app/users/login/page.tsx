@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import Link  from "next/link";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { login as logIn, logout as logOut } from "../../pocketbase";
 
 const LoginUserPage = () => {
@@ -8,7 +9,7 @@ const LoginUserPage = () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const login = async (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         try {
@@ -29,7 +30,10 @@ const LoginUserPage = () => {
     return (
         <div className="hero bg-secondary min-h-[30em] rounded-lg shadow-lg shadow-gray-300 py-8 xl:px-[15em]">
             <div className="hero-content flex-col lg:flex-row-reverse gap-[2em] lg:gap-[4em]">
-                <div className="text-center lg:text-left pointer-events-none">
+                <motion.div
+                    initial={{ opacity: 0, y: -50, filter: "blur(12px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                className="text-center lg:text-left pointer-events-none">
                     <h1 className="text-5xl lg:text-7xl font-bold calistoga-regular text-secondary-content">
                         whatscookin
                     </h1>
@@ -41,9 +45,12 @@ const LoginUserPage = () => {
                         next meal, we’re excited to have you back in the kitchen
                         with us.
                     </p>
-                </div>
-                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                    <form className="card-body" onSubmit={login}>
+                </motion.div>
+                <motion.div 
+                    initial={{ opacity: 0, y: 50, filter: "blur(12px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                    <form className="card-body" onSubmit={handleLogin}>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email</span>
@@ -102,7 +109,7 @@ const LoginUserPage = () => {
                             )}
                         </div>
                     </form>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

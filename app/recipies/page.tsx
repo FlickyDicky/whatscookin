@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import { Heart } from "lucide-react";
 import RecipiesList from "./RecipiesList";
+import Link from "next/link";
 
 const RecipiesPage = () => {
     const [recipiesList, setRecipiesList] = useState<any[]>([]);
@@ -14,7 +16,7 @@ const RecipiesPage = () => {
     };
 
     const handleLoadingState = (isLoading: boolean) => {
-            setLoading(isLoading);
+        setLoading(isLoading);
     };
 
     const addMoreRecipes = useCallback(
@@ -25,36 +27,46 @@ const RecipiesPage = () => {
         []
     );
 
-
     return (
         <>
-            <div className="flex gap-8 flex-wrap justify-center mt-5">
+            <div className="grid gap-8 mt-5 sm:grid-cols-2 lg:grid-cols-3 place-items-center">
                 {recipiesList.map((recipe, index: number) => (
-                    <div key={index} className="card bg-base-100 w-96 shadow-lg flex-grow">
-                        <figure>
-                        <img src="https://dummyimage.com/1920x1080/ff9500/000" alt="Random Nature Photo"/>
+                    <div
+                        key={index}
+                        className="w-full h-full shadow-lg shadow-base-300 card rounded-3xl bg-base-100"
+                    >
+                        <figure className="relative">
+                            <img
+                                src="https://dummyimage.com/1920x1080/9c9c9c/000"
+                                alt="Random Food Photo"
+                            />
+                            <div className="absolute flex justify-end inset-0 bg-gradient-to-b from-40% from-transparent to-black opacity-50 p-3">
+                                <Heart className="self-end text-white" />
+                            </div>
                         </figure>
                         <div className="card-body">
-                            <h2 className="card-title">
+                            <h2 className="card-title calistoga-regular">
                                 {recipe.name || "Recipe Name"}
                             </h2>
                             <p>
                                 {recipe.description ||
                                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
                             </p>
-                            <div className="card-actions justify-end">
-                                {recipe.ingredients && Array.from(recipe.ingredients).map((ingredient:any, index: number) => (
-                                    <div key={index} className="badge badge-primary">
-                                        {ingredient}
-                                    </div>
-                                ))}
-                            </div>
+                            <Link href={"recipies/" + recipe.id}>
+                                <button className="mt-8 shadow-lg shadow-base-300 btn btn-circle btn-block btn-secondary">
+                                    See Recipie
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 ))}
             </div>{" "}
             {/* Render RecipiesList component and pass the addMoreRecipes callback */}
-            <RecipiesList page={page} addMoreRecipes={addMoreRecipes} setLoading={handleLoadingState}/>
+            <RecipiesList
+                page={page}
+                addMoreRecipes={addMoreRecipes}
+                setLoading={handleLoadingState}
+            />
             <div className="flex justify-center">
                 <button
                     className="btn btn-outline mt-5 w-[100%]"

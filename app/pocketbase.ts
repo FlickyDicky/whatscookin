@@ -1,4 +1,4 @@
-import getPb from "./pbinstance";
+import getPb from "../pbinstance";
 const pb = getPb();
 
 export const fetchRecipes = async (

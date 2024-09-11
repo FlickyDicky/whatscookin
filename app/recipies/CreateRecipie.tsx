@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import getPb from "../pbinstance";
+import getPb from "../../pbinstance";
 
 const CreateRecipie = () => {
     const router = useRouter();

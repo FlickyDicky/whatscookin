@@ -14,7 +14,7 @@ const RecipiesList = ({
     setLoading: (isLoading: boolean) => void;
 }) => {
     const [error, setError] = useState<string | null>(null);
-    const itemsPerPage = 8;
+    const itemsPerPage = 6;
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
