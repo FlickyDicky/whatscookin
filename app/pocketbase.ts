@@ -12,10 +12,20 @@ export const fetchRecipes = async (
     return resultList.items;
 };
 
+export const fetchRecipieImage = async (recipe: any) => {
+    const image = pb.files.getUrl(recipe, recipe.img);
+    return image;
+}
+
 export async function fetchRecipeById(id: string, options?: any) {
     const recipe = await pb.collection("recipies").getOne(id, options);
     return recipe;
 }
+
+export const createRecipe = async (recipe: any) => {
+    const res = await pb.collection("recipies").create(recipe);
+    return res;
+};
 
 export const register = async (username: string, name: string, email: string, password: string, passwordConfirm: string) => {
     const user = {
