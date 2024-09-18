@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const NavbarPage = () => {
     return (
-        <div className="navbar bg-base-200 rounded-lg shadow-lg shadow-gray-300 mb-3">
+        <div className="mb-3 rounded-lg shadow-lg navbar bg-base-200 shadow-gray-300">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -13,7 +13,7 @@ const NavbarPage = () => {
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
+                            className="w-5 h-5"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -37,24 +37,22 @@ const NavbarPage = () => {
                             <a>Item 2</a>
                         </li>
                         <li>
-                            <a>Item 3</a>
+                            <Link href={"/recipies/create"}>Create Recipe</Link>
                         </li>
                         <li>
-                        <Link href={"/users/login"}>
-                            Login/Sign Up
-                        </Link>
-                    </li>
+                            <Link href={"/users/login"}>Login/Sign Up</Link>
+                        </li>
                     </ul>
                 </div>
                 <Link
                     href={"/recipies"}
-                    className="btn btn-ghost text-2xl lg:text-3xl calistoga-regular"
+                    className="text-2xl btn btn-ghost lg:text-3xl calistoga-regular"
                 >
                     whatscookin
                 </Link>
             </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
+            <div className="hidden navbar-center lg:flex">
+                <ul className="px-1 menu menu-horizontal">
                     <li>
                         <a>Item 1</a>
                     </li>
@@ -62,11 +60,11 @@ const NavbarPage = () => {
                         <a>Item 2</a>
                     </li>
                     <li>
-                        <a>Item 3</a>
+                        <Link href={"/recipies/create"}>Create Recipe</Link>
                     </li>
                 </ul>
             </div>
-            <div className="navbar-end hidden lg:flex">
+            <div className="hidden navbar-end lg:flex">
                 <Link className="btn btn-ghost" href={"/users/login"}>
                     Login/Sign Up
                 </Link>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { fetchRecipes } from "../pocketbase";
-import Loading from "./loading";
+import Loading from "./loadingTemplate";
 
 const RecipiesList = ({
     page,

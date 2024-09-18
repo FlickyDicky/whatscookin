@@ -186,7 +186,7 @@ const RecipiePage = ({ params }: any) => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.8 }}
                 viewport={{ once: true }}
-                className="col-span-8 shadow-lg bg-base-200 rounded-3xl shadow-base-300"
+                className="col-span-8 shadow-lg bg-base-200 rounded-3xl shadow-base-300 overflow-y-scroll"
             >
                 <h1 className="flex gap-2 p-8 text-2xl calistoga-regular md:text-4xl">
                     Preparation{" "}
@@ -195,6 +195,15 @@ const RecipiePage = ({ params }: any) => {
                         <Clock size={"16"} className="self-center inline" />
                     </span>
                 </h1>
+                <ul className="pl-8 list-decimal list-inside">
+                    {recipie.instructions && recipie.instructions.map(
+                        (step: string, index: number) => (
+                            <li key={index} className="">
+                                {step}
+                            </li>
+                        )
+                    )}
+                </ul>
             </motion.div>
         </div>
     );
