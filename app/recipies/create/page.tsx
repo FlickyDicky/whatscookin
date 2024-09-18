@@ -5,7 +5,7 @@ import { createRecipe } from "../../pocketbase";
 import getPb from "../../../pbinstance";
 import { motion } from "framer-motion";
 import CountrySelector from "@/app/components/CountrySelector";
-import { Clock, Plus } from "lucide-react";
+import { Clock, SquarePlus, PencilRuler } from "lucide-react";
 
 const CreateRecipie = () => {
     const pb = getPb();
@@ -22,8 +22,8 @@ const CreateRecipie = () => {
     const [timeMinutes, setTimeMinutes] = useState("");
     const [country, setCountry] = useState("");
 
-    const handleCountrySelect = (countryCode: string) => {
-        setCountry(countryCode);
+    const handleCountrySelect = (countryName: string) => {
+        setCountry(countryName);
     };
 
     const addIngredient = (e: any) => {
@@ -99,13 +99,33 @@ const CreateRecipie = () => {
 
     return (
         <div className="hero">
-            <div className="hero-content flex-col-reverse lg:flex-row-reverse gap-5 p-0 w-full max-w-full">
+            <div className="hero-content lg:flex-row-reverse gap-5 p-0 w-full max-w-full drawer lg:drawer-open">
+                <input
+                    id="my-drawer-2"
+                    type="checkbox"
+                    className="drawer-toggle"
+                />
                 <motion.div
                     initial={{ opacity: 0, y: -100, filter: "blur(12px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    className="text-center lg:text-left flex-grow self-start flex flex-col gap-5 z-10"
+                    className="text-left flex-grow self-start flex w-full flex-col gap-5 drawer-content"
                 >
-                    <div className="shadow-lg rounded-3xl bg-base-200 h-[30rem]">
+                    <div
+                        className="flex sticky lg:static justify-between lg:justify-center items-center w-full top-5 bg-base-100 shadow-lg rounded-3xl p-5 z-10"
+                    >
+                        <h3 className="text-sm md:text-md lg:text-2xl">
+                            Create your recipe{" "}
+                            <span className="opacity-50">step by step</span>
+                        </h3>
+                        <label
+                            htmlFor="my-drawer-2"
+                            className="btn btn-primary btn-sm md:btn-md lg:btn-lg drawer-button lg:hidden"
+                        >
+                            Toolbox
+                            <PencilRuler />
+                        </label>
+                    </div>
+                    <div className="shadow-lg rounded-3xl bg-base-200 w-full aspect-video">
                         {img ? (
                             <img
                                 src={liveImg}
@@ -122,10 +142,28 @@ const CreateRecipie = () => {
                         )}
                     </div>
                     <div className="p-8 shadow-lg rounded-3xl bg-base-200">
+                        <span className="flex justify-between mb-5">
+                            <h1 className="text-2xl calistoga-regular">
+                                {name ? name : "Recipe Name"}
+                            </h1>
+                            <div className="flex gap-2">
+                                <span className="badge badge-outline opacity-60 self-center">
+                                    {country ? country : "Country"}
+                                </span>
+                                <span className="badge badge-outline opacity-60 self-center">
+                                    {timeMinutes ? timeMinutes : 0} mins
+                                </span>
+                            </div>
+                        </span>
+                        <p>
+                            {description ? description : "Recipe description"}
+                        </p>
+                    </div>
+                    <div className="p-8 shadow-lg rounded-3xl bg-base-200">
                         <h2 className="mb-5 text-xl calistoga-regular">
                             Ingredients
                         </h2>
-                        <ul className="flex-col hidden w-full gap-3 pb-8 md:inline-block list-disc list-inside lg:flex">
+                        <ul className="flex-col flex w-full gap-2 pb-8 list-disc list-inside">
                             {ingredients.map((ingredient, index) => (
                                 <li key={index}>
                                     <span className="mr-2">{ingredient}</span>
@@ -143,7 +181,7 @@ const CreateRecipie = () => {
                         <h2 className="mb-5 text-xl calistoga-regular">
                             Instructions
                         </h2>
-                        <ul className="flex-col hidden w-full gap-3 pb-8 md:inline-block list-decimal list-inside lg:flex">
+                        <ul className="flex-col w-full gap-3 pb-8 list-decimal list-inside flex">
                             {instructions.map((instruction, index) => (
                                 <li key={index}>
                                     <span className="mr-2">{instruction}</span>
@@ -161,9 +199,17 @@ const CreateRecipie = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="w-full max-w-sm shadow-2xl card bg-base-100 shrink-0 self-start"
+                    className="w-full lg:shadow-lg rounded-none lg:rounded-3xl card shrink-0 self-start drawer-side"
                 >
-                    <form className="card-body" onSubmit={create}>
+                    <label
+                        htmlFor="my-drawer-2"
+                        aria-label="close sidebar"
+                        className="drawer-overlay"
+                    ></label>
+                    <form
+                        className="card-body rounded-none bg-base-100 min-h-full w-3/4 lg:w-full"
+                        onSubmit={create}
+                    >
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Recipe name</span>
@@ -221,7 +267,9 @@ const CreateRecipie = () => {
                                     className="grow"
                                     value={timeMinutes}
                                     required
-                                    onChange={(e) => setTimeMinutes(e.target.value)}
+                                    onChange={(e) =>
+                                        setTimeMinutes(e.target.value)
+                                    }
                                 />
                                 <Clock className="opacity-50" />
                             </label>
@@ -245,15 +293,16 @@ const CreateRecipie = () => {
                                     type="text"
                                     placeholder="ingredient"
                                     value={newIngredient}
+                                    className="w-full"
                                     onChange={(e) =>
                                         setNewIngredient(e.target.value)
                                     }
                                 />
                                 <button
                                     onClick={addIngredient}
-                                    className="self-center btn btn-sm btn-circle btn-outline"
+                                    className="self-center btn btn-sm btn-circle btn-ghost"
                                 >
-                                    <Plus />
+                                    <SquarePlus />
                                 </button>
                             </label>
                         </div>
@@ -274,9 +323,9 @@ const CreateRecipie = () => {
                                 />
                                 <button
                                     onClick={addInstruction}
-                                    className="self-center btn btn-circle btn-sm btn-outline"
+                                    className="self-center btn btn-circle btn-sm btn-ghost"
                                 >
-                                    <Plus />
+                                    <SquarePlus />
                                 </button>
                             </div>
                         </div>

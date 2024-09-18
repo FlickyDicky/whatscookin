@@ -9,7 +9,7 @@ export interface Country {
   }
 
 interface CountrySelectorProps {
-  onCountrySelect: (countryCode: string) => void;
+  onCountrySelect: (countryName: string) => void;
 }
 
 const CountrySelector: React.FC<CountrySelectorProps> = ({ onCountrySelect }) => {
@@ -40,9 +40,9 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onCountrySelect }) =>
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const countryCode = event.target.value;
-    setSelectedCountry(countryCode);
-    onCountrySelect(countryCode);
+    const countryName = event.target.value;
+    setSelectedCountry(countryName);
+    onCountrySelect(countryName);
   };
 
   return (
@@ -50,7 +50,7 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onCountrySelect }) =>
       <select value={selectedCountry} onChange={handleChange} className='w-full select select-bordered' required>
         <option value="" disabled>Select a country</option>
         {countries.map((country) => (
-          <option key={country.cca2} value={country.cca2}>
+          <option key={country.cca2} value={country.name.common}>
             {country.name.common}
           </option>
         ))}
