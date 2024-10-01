@@ -2,10 +2,16 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { createRecipe } from "../../pocketbase";
+import RecipeItem from "@/app/components/RecipeItem";
 import getPb from "../../../pbinstance";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import CountrySelector from "@/app/components/CountrySelector";
 import { Clock, SquarePlus, PencilRuler } from "lucide-react";
+
+interface ListItem {
+    id: number;
+    content: string;
+}
 
 const CreateRecipie = () => {
     const pb = getPb();
@@ -15,9 +21,9 @@ const CreateRecipie = () => {
     const [img, setImg] = useState("");
     const [liveImg, setliveImg] = useState("");
     const [description, setDescription] = useState("");
-    const [ingredients, setIngredients] = useState<string[]>([]);
+    const [ingredients, setIngredients] = useState<ListItem[]>([]);
     const [newIngredient, setNewIngredient] = useState("");
-    const [instructions, setInstructions] = useState<string[]>([]);
+    const [instructions, setInstructions] = useState<ListItem[]>([]);
     const [newInstruction, setNewInstruction] = useState("");
     const [timeMinutes, setTimeMinutes] = useState("");
     const [country, setCountry] = useState("");
@@ -29,7 +35,11 @@ const CreateRecipie = () => {
     const addIngredient = (e: any) => {
         e.preventDefault();
         if (newIngredient.trim()) {
-            setIngredients([...ingredients, newIngredient]);
+            const newItem: ListItem = {
+                id: ingredients.length,
+                content: newIngredient,
+            };
+            setIngredients([...ingredients, newItem]);
             setNewIngredient("");
         }
     };
@@ -37,19 +47,21 @@ const CreateRecipie = () => {
     const addInstruction = (e: any) => {
         e.preventDefault();
         if (newInstruction.trim()) {
-            setInstructions([...instructions, newInstruction]);
+            const newItem: ListItem = {
+                id: ingredients.length,
+                content: newIngredient,
+            };
+            setInstructions([...instructions, newItem]);
             setNewInstruction("");
         }
     };
 
     const removeIngredient = (index: number) => {
-        const updatedIngredients = ingredients.filter((_, i) => i !== index);
-        setIngredients(updatedIngredients);
+        setIngredients((pv) => pv.filter((_, i) => i !== index));
     };
 
     const removeInstruction = (index: number) => {
-        const updatedInstructions = instructions.filter((_, i) => i !== index);
-        setInstructions(updatedInstructions);
+        setInstructions((pv) => pv.filter((_, i) => i !== index));
     };
 
     const onImageChange = (e: any) => {
@@ -110,9 +122,7 @@ const CreateRecipie = () => {
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     className="text-left flex-grow self-start flex w-full flex-col gap-5 drawer-content"
                 >
-                    <div
-                        className="flex sticky lg:static justify-between lg:justify-center items-center w-full top-5 bg-base-100 shadow-lg rounded-3xl p-5 z-10"
-                    >
+                    <div className="flex sticky lg:static justify-between lg:justify-center items-center w-full top-5 bg-base-100 shadow-lg rounded-3xl p-5 z-10">
                         <h3 className="text-sm md:text-md lg:text-2xl">
                             Create your recipe{" "}
                             <span className="opacity-50">step by step</span>
@@ -163,37 +173,37 @@ const CreateRecipie = () => {
                         <h2 className="mb-5 text-xl calistoga-regular">
                             Ingredients
                         </h2>
-                        <ul className="flex-col flex w-full gap-2 pb-8 list-disc list-inside">
-                            {ingredients.map((ingredient, index) => (
-                                <li key={index}>
-                                    <span className="mr-2">{ingredient}</span>
-                                    <button
-                                        onClick={() => removeIngredient(index)}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Remove
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className="flex-col flex w-full gap-3 pb-8">
+                            <AnimatePresence>
+                                {ingredients.map((item, index) => (
+                                    <RecipeItem
+                                        key={item.id}
+                                        item={item.content}
+                                        handleClick={() =>
+                                            removeIngredient(index)
+                                        }
+                                    />
+                                ))}
+                            </AnimatePresence>
+                        </div>
                     </div>
                     <div className="p-8 shadow-lg rounded-3xl bg-base-200">
                         <h2 className="mb-5 text-xl calistoga-regular">
                             Instructions
                         </h2>
-                        <ul className="flex-col w-full gap-3 pb-8 list-decimal list-inside flex">
-                            {instructions.map((instruction, index) => (
-                                <li key={index}>
-                                    <span className="mr-2">{instruction}</span>
-                                    <button
-                                        onClick={() => removeInstruction(index)}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Remove
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className="flex-col w-full gap-3 pb-8 flex">
+                            <AnimatePresence>
+                                {instructions.map((item, index) => (
+                                    <RecipeItem
+                                        key={item.id}
+                                        item={item.content}
+                                        handleClick={() =>
+                                            removeInstruction(index)
+                                        }
+                                    />
+                                ))}
+                            </AnimatePresence>
+                        </div>
                     </div>
                 </motion.div>
                 <motion.div
